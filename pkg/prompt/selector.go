@@ -7,10 +7,20 @@ import (
 )
 
 // SelectContext prompts the user to select a Kubernetes context.
-func SelectContext(contexts []kubeconfig.ContextDetails) (string, error) {
-	items := make([]string, len(contexts))
-	for i, context := range contexts {
-		items[i] = context.Name
+func SelectContext(configFiles []string) (string, error) {
+	index := 0
+	items := []string{}
+
+	for _, file := range configFiles {
+		contexts, err := kubeconfig.GetContexts(file)
+		if err != nil {
+			return "", err
+		}
+
+		for _, context := range contexts {
+			items[index] = context.Name
+			index++
+		}
 	}
 
 	prompt := promptui.Select{

@@ -1,0 +1,41 @@
+---
+apiVersion: v1
+kind: Config
+
+clusters:
+  - name: cluster-2
+    cluster:
+      server: https://192.168.67.2:8443
+      extensions: []
+      certificate-authority: ...
+  - name: cluster-3
+    cluster:
+      server: https://192.168.67.3:8443
+      extensions: []
+      certificate-authority: ...
+
+
+contexts:
+  - name: context-2
+    context:
+      cluster: cluster-2
+      user: user-2
+      namespace: default
+  - name: context-3
+    context:
+      cluster: cluster-3
+      user: user-3
+      namespace: default
+
+users:
+  - name: cluster-2
+    user:
+      client-certificate: ...
+      client-key: ...
+  - name: cluster-3
+    user:
+      client-certificate: ...
+      client-key: ...
+
+current-context: context-3
+preferences: {}

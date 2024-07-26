@@ -21,12 +21,9 @@ var switchCmd = &cobra.Command{
 	Use:   "switch",
 	Short: "Switch Kubernetes context",
 	Run: func(cmd *cobra.Command, args []string) {
-		// Determine the kubeconfig directory
-		if configDir == "" {
-			configDir = os.Getenv("KUBESWITCHER_CONFIG_DIR")
-			if configDir == "" {
-				log.Fatal("KUBESWITCHER_CONFIG_DIR environment variable is not set")
-			}
+		configDir, err := config.getConfigDir()
+		if err != nil {
+			log.Fatal("KUBESWITCHER_CONFIG_DIR environment variable is not set")
 		}
 
 		// Parse all kubeconfigs in the specified directory
